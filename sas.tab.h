@@ -62,7 +62,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 17 "sas.y"
+#line 19 "sas.y"
 
 	char *string;
 	struct expr_node *expr;

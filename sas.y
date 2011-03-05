@@ -12,6 +12,8 @@ int yywrap() { return 1; }
 extern int lineno;
 extern FILE *yyin;
 
+int is_string = 0;
+
 %}
 
 %union {
@@ -36,7 +38,7 @@ extern FILE *yyin;
 
 %token<string> ID
 
-%type<expr> expr c_expr
+%type<expr> expr c_expr assign_statement
 
 %nonassoc THEN
 %nonassoc ELSE
@@ -65,8 +67,8 @@ if_statement: IF c_expr THEN then_clause
 			| IF c_expr THEN then_clause ELSE else_clause
 			;
 
-c_expr: expr COMPARISON expr 		{ $$ = make_expr_node($1, $3, $2);  add_variable(get_expr_lnode($$), 0);}	
-	  | expr '=' expr				{ $$ = make_expr_node($1, $3, "=");  add_variable(get_expr_lnode($$), 0);}
+c_expr: expr COMPARISON expr 		{ $$ = make_expr_node($1, $3, $2);  add_variable(get_expr_lnode($$), is_string); }	
+	  | expr '=' expr				{ $$ = make_expr_node($1, $3, "=");  add_variable(get_expr_lnode($$), is_string); }
 	  | in_clause
 	  | c_expr AND c_expr
 	  | c_expr OR c_expr
@@ -83,8 +85,8 @@ in_list: expr
 	   | in_list ',' expr
 	   ;
 
-expr: NUMBER			{ $$ = make_expr_node(NULL, NULL, $1); }
-	| STRING			{ $$ = make_expr_node(NULL, NULL, $1); }
+expr: NUMBER			{ $$ = make_expr_node(NULL, NULL, $1); is_string = 0; }
+	| STRING			{ $$ = make_expr_node(NULL, NULL, $1); is_string = 1;}
 	| ID				{ $$ = make_expr_node(NULL, NULL, $1); }
 	| expr '+' expr		{ $$ = make_expr_node($1, $3, "+"); }
 	| expr '-' expr		{ $$ = make_expr_node($1, $3, "-"); }
@@ -97,7 +99,7 @@ then_clause: statement
 		   | DO ';'  statements END ';'
 		   ;
 
-assign_statement: ID '=' expr ';'
+assign_statement: ID '=' expr ';'				{ $$ = make_expr_node(make_expr_node(NULL, NULL, $1), $3, "="); add_variable(get_expr_lnode($$), is_string); }
 				;
 
 else_clause: statement

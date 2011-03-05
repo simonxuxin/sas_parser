@@ -83,10 +83,12 @@ int yywrap() { return 1; }
 extern int lineno;
 extern FILE *yyin;
 
+int is_string = 0;
+
 
 
 /* Line 189 of yacc.c  */
-#line 90 "sas.tab.c"
+#line 92 "sas.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -136,7 +138,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 17 "sas.y"
+#line 19 "sas.y"
 
 	char *string;
 	struct expr_node *expr;
@@ -144,7 +146,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 148 "sas.tab.c"
+#line 150 "sas.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -156,7 +158,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 160 "sas.tab.c"
+#line 162 "sas.tab.c"
 
 #ifdef short
 # undef short
@@ -452,10 +454,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    53,    53,    56,    57,    60,    61,    64,    65,    68,
-      69,    70,    71,    72,    75,    78,    79,    82,    83,    86,
-      87,    88,    89,    90,    91,    92,    93,    96,    97,   100,
-     103,   104
+       0,    55,    55,    58,    59,    62,    63,    66,    67,    70,
+      71,    72,    73,    74,    77,    80,    81,    84,    85,    88,
+      89,    90,    91,    92,    93,    94,    95,    98,    99,   102,
+     105,   106
 };
 #endif
 
@@ -1397,84 +1399,91 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 53 "sas.y"
+#line 55 "sas.y"
     { pr_variables(); ;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 68 "sas.y"
-    { (yyval.expr) = make_expr_node((yyvsp[(1) - (3)].expr), (yyvsp[(3) - (3)].expr), (yyvsp[(2) - (3)].string));  add_variable(get_expr_lnode((yyval.expr)), 0);;}
+#line 70 "sas.y"
+    { (yyval.expr) = make_expr_node((yyvsp[(1) - (3)].expr), (yyvsp[(3) - (3)].expr), (yyvsp[(2) - (3)].string));  add_variable(get_expr_lnode((yyval.expr)), is_string); ;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 69 "sas.y"
-    { (yyval.expr) = make_expr_node((yyvsp[(1) - (3)].expr), (yyvsp[(3) - (3)].expr), "=");  add_variable(get_expr_lnode((yyval.expr)), 0);;}
+#line 71 "sas.y"
+    { (yyval.expr) = make_expr_node((yyvsp[(1) - (3)].expr), (yyvsp[(3) - (3)].expr), "=");  add_variable(get_expr_lnode((yyval.expr)), is_string); ;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 86 "sas.y"
-    { (yyval.expr) = make_expr_node(NULL, NULL, (yyvsp[(1) - (1)].string)); ;}
+#line 88 "sas.y"
+    { (yyval.expr) = make_expr_node(NULL, NULL, (yyvsp[(1) - (1)].string)); is_string = 0; ;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 87 "sas.y"
-    { (yyval.expr) = make_expr_node(NULL, NULL, (yyvsp[(1) - (1)].string)); ;}
+#line 89 "sas.y"
+    { (yyval.expr) = make_expr_node(NULL, NULL, (yyvsp[(1) - (1)].string)); is_string = 1;;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 88 "sas.y"
+#line 90 "sas.y"
     { (yyval.expr) = make_expr_node(NULL, NULL, (yyvsp[(1) - (1)].string)); ;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 89 "sas.y"
+#line 91 "sas.y"
     { (yyval.expr) = make_expr_node((yyvsp[(1) - (3)].expr), (yyvsp[(3) - (3)].expr), "+"); ;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 90 "sas.y"
+#line 92 "sas.y"
     { (yyval.expr) = make_expr_node((yyvsp[(1) - (3)].expr), (yyvsp[(3) - (3)].expr), "-"); ;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 91 "sas.y"
+#line 93 "sas.y"
     { (yyval.expr) = make_expr_node((yyvsp[(1) - (3)].expr), (yyvsp[(3) - (3)].expr), "/"); ;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 92 "sas.y"
+#line 94 "sas.y"
     { (yyval.expr) = make_expr_node((yyvsp[(1) - (3)].expr), (yyvsp[(3) - (3)].expr), "*"); ;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 93 "sas.y"
+#line 95 "sas.y"
     { (yyval.expr) = (yyvsp[(2) - (3)].expr); ;}
+    break;
+
+  case 29:
+
+/* Line 1455 of yacc.c  */
+#line 102 "sas.y"
+    { (yyval.expr) = make_expr_node(make_expr_node(NULL, NULL, (yyvsp[(1) - (4)].string)), (yyvsp[(3) - (4)].expr), "="); add_variable(get_expr_lnode((yyval.expr)), is_string); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1478 "sas.tab.c"
+#line 1487 "sas.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1686,7 +1695,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 107 "sas.y"
+#line 109 "sas.y"
 
 
 void yyerror(const char *s) {

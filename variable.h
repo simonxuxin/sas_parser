@@ -11,5 +11,5 @@ typedef struct variable {
 
 void add_variable(char *, int);
 void pr_variables();
-
+Variable * make_variable(char *, int);
 #endif
